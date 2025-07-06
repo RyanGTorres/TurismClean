@@ -1,0 +1,12 @@
+version: '3.8'
+services:
+  postgres:
+    image: postgres
+    container_name: TurismClean
+    environment:
+      POSTGRES_DB: TurismClean
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+    ports:
+      - "5436:5432"
+    restart: always

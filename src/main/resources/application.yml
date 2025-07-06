@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: TurismClean
+
+  datasource:
+    url: jdbc:postgresql://localhost:5436/TurismClean
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    show_sql: true
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
