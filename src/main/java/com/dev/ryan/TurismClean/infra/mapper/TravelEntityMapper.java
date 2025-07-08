@@ -1,11 +1,14 @@
 package com.dev.ryan.TurismClean.infra.mapper;
 
 import com.dev.ryan.TurismClean.core.domain.Travel;
+import com.dev.ryan.TurismClean.infra.gateway.TravelRepositoryGateway;
 import com.dev.ryan.TurismClean.infra.persistence.TravelEntity;
 import org.springframework.stereotype.Component;
 
 @Component
 public class TravelEntityMapper {
+
+
 
     public TravelEntity toEntity(Travel travel){
         return new TravelEntity(

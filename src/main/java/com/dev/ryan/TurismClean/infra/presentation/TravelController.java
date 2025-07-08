@@ -4,6 +4,7 @@ import com.dev.ryan.TurismClean.core.domain.Travel;
 import com.dev.ryan.TurismClean.core.usecases.CreateTravelUsecase;
 import com.dev.ryan.TurismClean.core.usecases.FilterByIndentifierUsecase;
 import com.dev.ryan.TurismClean.core.usecases.FindTravelUsecase;
+import com.dev.ryan.TurismClean.core.usecases.GenerateIdentifierUsecase;
 import com.dev.ryan.TurismClean.infra.dtos.TravelDto;
 import com.dev.ryan.TurismClean.infra.mapper.TravelMapper;
 import lombok.RequiredArgsConstructor;
@@ -23,10 +24,12 @@ public class TravelController {
     private final CreateTravelUsecase createTravelUsecase;
     private final FindTravelUsecase findTravelUsecase;
     private final FilterByIndentifierUsecase filterByIndentifierUsecase;
+    private final GenerateIdentifierUsecase generateIdentifierUsecase;
     private final TravelMapper travelMapper;
 
     @PostMapping
     public ResponseEntity<Map<String, Object>> createTravel(@RequestBody TravelDto travel){
+        generateIdentifierUsecase.execute();
         Travel newTravel = createTravelUsecase.execute(travelMapper.toDomain(travel));
         Map<String, Object> response = new HashMap<>();
         response.put("Mensagem", "A viagem foi criada com sucesso!");
@@ -43,9 +46,10 @@ public class TravelController {
     }
 
     @GetMapping("/{identifier}")
-    public ResponseEntity<Optional<Travel>>  findTravelByIdentifier(@PathVariable String identifier){
-        Optional<Travel> travel = filterByIndentifierUsecase.execute(identifier);
-        return ResponseEntity.ok(travel);
+    public ResponseEntity<TravelDto> findTravelByIdentifier(@PathVariable String identifier){
+        Travel travel = filterByIndentifierUsecase.execute(identifier);
+        return ResponseEntity.ok(travelMapper.toDTO(travel));
     }
+
 
 }

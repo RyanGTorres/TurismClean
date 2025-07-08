@@ -21,4 +21,9 @@ public class TravelConfiguration {
     public FilterByIndentifierUsecase filterByIndentifierUsecase (TravelGateway travelGateway){
         return new FilterByIndentifierUsecaseImpl(travelGateway);
     }
+
+    @Bean
+    public GenerateIdentifierUsecase generateIdentifierUsecase(TravelGateway travelGateway){
+        return new GenerateIdentifierUsecaseImpl(travelGateway);
+    }
 }

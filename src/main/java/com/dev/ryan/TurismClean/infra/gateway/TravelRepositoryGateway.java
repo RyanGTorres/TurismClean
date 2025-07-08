@@ -12,6 +12,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
+
 
 @Component
 @RequiredArgsConstructor
@@ -21,10 +23,10 @@ public class TravelRepositoryGateway implements TravelGateway {
 
     @Override
     public Travel createTravel(Travel travel) {
-        //Optional<Travel> usuario = findIdentifier(travel.identifier());
-        if (usuario.isPresent()){
+       Optional<TravelEntity> usuario = travelRepository.findByIdentifier(travel.identifier());
+        if (usuario.isPresent()) {
             throw new BusinessException("Uma viagem com este indentificador já foi criada!");
-        }else {
+        } else {
             TravelEntity travelAtualizado = travelEntityMapper.toEntity(travel);
             TravelEntity travelSaved = travelRepository.save(travelAtualizado);
             return travelEntityMapper.toDomain(travelSaved);
@@ -41,7 +43,23 @@ public class TravelRepositoryGateway implements TravelGateway {
 
     @Override
     public Travel findIdentifier(String identifier) {
-       return travelRepository.findByIdentifier(identifier);
+        Optional<TravelEntity> travel = travelRepository.findByIdentifier(identifier);
+        return travel.map(travelEntityMapper::toDomain).orElseThrow(() ->
+                new NotFoundTravelException("O identificador "+identifier+" não foi encontrado! Tente novamente!"));
+    }
+
+    @Override
+    public String generateIdentifier() {
+        Random random = new Random();
+
+        StringBuilder letras = new StringBuilder();
+        for (int i = 0; i < 3; i++) {
+            letras.append((char) ('A' + random.nextInt(26)));
+        }
+        int numero = 100 + random.nextInt(999);
+
+        return letras + "-" +numero;
+
     }
 
 
