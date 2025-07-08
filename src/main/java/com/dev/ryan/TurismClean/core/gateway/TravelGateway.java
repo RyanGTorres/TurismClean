@@ -12,4 +12,6 @@ public interface TravelGateway {
     public List<Travel> findAllTravel();
 
     public Travel findIdentifier(String identifier);
+
+    public String generateIdentifier();
 }
